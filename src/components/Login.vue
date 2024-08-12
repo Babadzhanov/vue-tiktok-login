@@ -1,11 +1,30 @@
+<script>
+import config from '@/config'
+
+export default {
+  methods: {
+    loginWithTikTok() {
+      const clientId = config.tiktok.id
+      const redirectUri = encodeURIComponent('http://localhost:5173/user')
+      const scope = 'user.info.basic'
+      const responseType = 'code'
+      const authUrl = `https://open-api.tiktok.com/platform/oauth/connect/?client_key=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=${responseType}`
+      window.open(authUrl, '_blank')
+    }
+  }
+}
+</script>
+
 <template>
-  <div class="greetings">
-    <h1 class="green">{{"Login"}}</h1>
-    <button @onClick="">Login using Tiktok</button>
+  <div class="login">
+    <h1 class="green">{{ 'Login' }}</h1>
+    <button class="button-login" @click="loginWithTikTok">Login using TikTok</button>
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '@/assets/variables.scss';
+
 h1 {
   font-weight: 500;
   font-size: 2.6rem;
@@ -17,15 +36,30 @@ h3 {
   font-size: 1.2rem;
 }
 
-.greetings h1,
-.greetings h3 {
-  text-align: center;
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  h1,
+  h3 {
+    text-align: center;
+  }
 }
 
-@media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    text-align: left;
+.button-login {
+  padding: 15px 30px;
+  margin: 0;
+  border: 0;
+  border-radius: 20px;
+  color: #fff;
+  font-weight: bold;
+  background-color: #000;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $color-primary-hover;
   }
 }
 </style>
