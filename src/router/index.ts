@@ -3,7 +3,9 @@ import HomeView from '../views/HomeView.vue'
 import UserView from '../views/UserView.vue'
 
 const router = createRouter({
-  history: createWebHistory('/_temp/tiktok-login/'),
+  history: createWebHistory(
+    import.meta.env.MODE === 'production' ? '/_temp/tiktok-login-v2/' : '/'
+  ),
   routes: [
     {
       path: '/',
