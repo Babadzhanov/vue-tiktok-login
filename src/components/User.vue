@@ -1,5 +1,6 @@
 <script>
 export default {
+  name: 'User',
   data() {
     return {
       error: null,
@@ -7,30 +8,43 @@ export default {
     }
   },
   async created() {
-    const urlParams = new URLSearchParams(window.location.search)
-    const code = urlParams.get('code')
+    const urlSearchParams = new URLSearchParams(window.location.search)
+    const code = urlSearchParams.get('code')
     if (code) {
       try {
-        const response = await fetch('http://localhost:3000/exchange_code', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ code })
+        await axios.post('https://dev.vervesearch.com:4000/_temp/tiktok-login/tiktokaccesstoken', {
+          code: code
         })
-        const data = await response.json()
-        console.log(`data`, data)
-        if (data.error) {
-          this.error = data.error
-        } else {
-          this.user = data.user
-        }
-      } catch (err) {
-        this.error = 'An error occurred while logging in.'
+      } catch (error) {
+        console.error('An error occurred while posting the code:', error)
       }
-    } else {
-      this.error = 'No authorization code found.'
     }
+
+    // if (code) {
+    //   try {
+    //     const response = await fetch(
+    //       'http://localhost:3000/oauth',
+    //       {
+    //         method: 'POST',
+    //         headers: {
+    //           'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({ code })
+    //       }
+    //     )
+    //     const data = await response.json()
+    //     console.log(`data`, data)
+    //     if (data.error) {
+    //       this.error = data.error
+    //     } else {
+    //       this.user = data.user
+    //     }
+    //   } catch (err) {
+    //     this.error = 'An error occurred while logging in.'
+    //   }
+    // } else {
+    //   this.error = 'No authorization code found.'
+    // }
   }
 }
 </script>
@@ -38,7 +52,8 @@ export default {
 <template>
   <div>
     <p v-if="error">{{ error }}</p>
-    <p v-else-if="user">Welcome, {{ user.display_name }}</p>
+    <p>Welcome User</p>
+    <!-- <p v-else-if="user">Welcome, {{ user.display_name }}</p> -->
   </div>
 </template>
 

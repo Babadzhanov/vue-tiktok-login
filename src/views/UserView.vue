@@ -1,9 +1,15 @@
-<script setup lang="ts">
+<script lang="ts">
 import User from '../components/User.vue'
+
+export default {
+  components: {
+    User
+  }
+}
 </script>
 
 <template>
   <main>
-    <User msg="Logged"/>
+    <User />
   </main>
 </template>
