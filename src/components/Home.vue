@@ -1,61 +1,49 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+// import { onMounted } from 'vue'
 import axios from 'axios'
 
-// Login with TikTok button click
-function loginWithTikTok() {
-  const clientKey = import.meta.env.VITE_TIKTOK_CLIENT_KEY
-  const redirectUri = encodeURIComponent(import.meta.env.VITE_TIKTOK_REDIRECT_URI)
-  const availableScopes = [
-    'user.info.basic',
-    'user.info.profile',
-    'user.info.stats',
-    'artist.certification.read',
-    'artist.certification.update',
-    'research.data.u18eu',
-    'video.list'
-  ]
-  const scope = availableScopes.join(',')
-  const csrfState = Math.random().toString(36).substring(2)
-  const authUrl = `https://www.tiktok.com/v2/auth/authorize/?client_key=${clientKey}&response_type=code&scope=${scope}&redirect_uri=${redirectUri}&state=${csrfState}`
-  window.location.href = authUrl
+// Get the TikTok authorization URL
+const loginWithTikTok = async () => {
+  const response = await axios.get('https://vue-tiktok-login-server.onrender.com/oauth')
+  console.log(`getAuthUrl's response:`, response)
+  window.location.href = `${response.data.url}`
 }
 
 // Handle the TikTok redirect
-function handleTikTokRedirect() {
-  const urlParams = new URLSearchParams(window.location.search)
-  const code = urlParams.get('code')
-  const scopes = urlParams.get('scopes')
-  const state = urlParams.get('state')
+// function handleTikTokRedirect() {
+//   const urlParams = new URLSearchParams(window.location.search)
+//   const code = urlParams.get('code')
+//   const scopes = urlParams.get('scopes')
+//   const state = urlParams.get('state')
 
-  if (code) {
-    exchangeCodeForToken(code)
-    console.log('Authorization code:', code)
-    console.log('Scopes:', scopes)
-    console.log('State:', state)
+//   if (code) {
+//     exchangeCodeForToken(code)
+//     console.log('Authorization code:', code)
+//     console.log('Scopes:', scopes)
+//     console.log('State:', state)
 
-    // remove the code from the URL
-    window.history.replaceState({}, document.title, window.location.pathname)
-  }
-}
+//     // remove the code from the URL
+//     window.history.replaceState({}, document.title, window.location.pathname)
+//   }
+// }
 
 // Exchange the authorization code for an access token
-async function exchangeCodeForToken(code: string) {
-  try {
-    const response = await axios.post('https://dev.vervesearch.com/_temp/tiktok-login/token', {
-      code
-    })
-    console.log(`response`, response)
-    const accessToken = response.data.data.access_token
-    console.log('Access Token:', accessToken)
-  } catch (error) {
-    console.error('Error exchanging code for token:', error)
-  }
-}
+// async function exchangeCodeForToken(code: string) {
+//   try {
+//     const response = await axios.post('https://dev.vervesearch.com/_temp/tiktok-login-v2/token', {
+//       code
+//     })
+//     console.log(`response`, response)
+//     const accessToken = response.data.data.access_token
+//     console.log('Access Token:', accessToken)
+//   } catch (error) {
+//     console.error('Error exchanging code for token:', error)
+//   }
+// }
 
-onMounted(() => {
-  handleTikTokRedirect()
-})
+// onMounted(() => {
+//   handleTikTokRedirect()
+// })
 </script>
 
 <template>

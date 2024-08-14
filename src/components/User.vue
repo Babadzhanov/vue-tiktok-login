@@ -1,83 +1,58 @@
 <script>
+import axios from 'axios'
+import { onMounted } from 'vue'
+
 export default {
-  name: 'User',
-  data() {
-    return {
-      error: null,
-      user: null
-    }
-  },
-  async created() {
-    const urlSearchParams = new URLSearchParams(window.location.search)
-    const code = urlSearchParams.get('code')
-    if (code) {
-      try {
-        await axios.post('https://dev.vervesearch.com:4000/_temp/tiktok-login/tiktokaccesstoken', {
-          code: code
-        })
-      } catch (error) {
-        console.error('An error occurred while posting the code:', error)
+  setup() {
+    // Handle the TikTok redirect
+    async function handleTikTokRedirect() {
+      const urlSearchParams = new URLSearchParams(window.location.search)
+      const code = urlSearchParams.get('code')
+      const scopes = urlSearchParams.get('scopes')
+      const state = urlSearchParams.get('state')
+      console.log('Authorization code:', code)
+      console.log('Scopes:', scopes)
+      console.log('State:', state)
+
+      if (code) {
+        try {
+          const response = await axios.post(
+            'https://vue-tiktok-login-server.onrender.com/accesstoken',
+            {
+              code
+            }
+          )
+          console.log(`response`, response)
+          const accessToken = response.data.access_token
+          console.log('Access Token:', accessToken)
+        } catch (error) {
+          console.error('Error exchanging code for token:', error)
+        }
+
+        // Clear the code from the URL
+        window.history.replaceState({}, document.title, window.location.pathname)
       }
     }
 
-    // if (code) {
-    //   try {
-    //     const response = await fetch(
-    //       'http://localhost:3000/oauth',
-    //       {
-    //         method: 'POST',
-    //         headers: {
-    //           'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify({ code })
-    //       }
-    //     )
-    //     const data = await response.json()
-    //     console.log(`data`, data)
-    //     if (data.error) {
-    //       this.error = data.error
-    //     } else {
-    //       this.user = data.user
-    //     }
-    //   } catch (err) {
-    //     this.error = 'An error occurred while logging in.'
-    //   }
-    // } else {
-    //   this.error = 'No authorization code found.'
-    // }
+    onMounted(() => {
+      handleTikTokRedirect()
+    })
   }
 }
 </script>
 
 <template>
-  <div>
-    <p v-if="error">{{ error }}</p>
-    <p>Welcome User</p>
-    <!-- <p v-else-if="user">Welcome, {{ user.display_name }}</p> -->
+  <div class="user">
+    <h1>Welcome User</h1>
   </div>
 </template>
 
 <style scoped>
-h1 {
-  font-weight: 500;
-  font-size: 2.6rem;
-  position: relative;
-  top: -10px;
-}
-
-h3 {
-  font-size: 1.2rem;
-}
-
-.greetings h1,
-.greetings h3 {
-  text-align: center;
-}
-
 @media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    text-align: left;
+  .user {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
   }
 }
 </style>
