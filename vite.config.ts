@@ -9,10 +9,15 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 export default defineConfig({
   plugins: [vue(), vueJsx(), vueDevTools()],
   base:
-    process.env.NODE_ENV === 'production' ? 'https://dev.vervesearch.com/_temp/tiktok-login-v2/' : '/',
+    process.env.NODE_ENV === 'production'
+      ? 'https://dev.vervesearch.com/_temp/tiktok-login/'
+      : '/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  server: {
+    port: 3000
   }
 })

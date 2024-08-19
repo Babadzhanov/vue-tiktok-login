@@ -17,7 +17,7 @@ app.use(cookieParser())
 app.get('/oauth', (req, res) => {
   console.log(`Received GET request at: ${req.originalUrl}`)
   const clientKey = 'sbawixotck9n8mqe9w'
-  const redirectUri = 'https://dev.vervesearch.com/_temp/tiktok-login-v2/'
+  const redirectUri = 'https://dev.vervesearch.com/_temp/tiktok-login/'
   const availableScopes = [
     'user.info.basic',
     'user.info.profile',
@@ -44,7 +44,7 @@ app.post('/accesstoken', async (req, res) => {
   try {
     const clientKey = 'sbawixotck9n8mqe9w'
     const clientSecret = 'dvi0ZWN7KAaHPtwl0McIJFWV8AilPVzN'
-    const redirectUri = 'https://dev.vervesearch.com/_temp/tiktok-login-v2/'
+    const redirectUri = 'https://dev.vervesearch.com/_temp/tiktok-login/'
     console.log(`clientKey: ${clientKey}`)
     console.log(`clientSecret: ${clientSecret}`)
     console.log(`redirectUri: ${redirectUri}`)
@@ -73,11 +73,11 @@ app.post('/accesstoken', async (req, res) => {
 })
 
 //-
-// app.post('/_temp/tiktok-login-v2/token', async (req, res) => {
+// app.post('/_temp/tiktok-login/token', async (req, res) => {
 //   const { code } = req.body
 //   const clientKey = 'sbawixotck9n8mqe9w'
 //   const clientSecret = 'dvi0ZWN7KAaHPtwl0McIJFWV8AilPVzN'
-//   const redirectUri = 'https://dev.vervesearch.com/_temp/tiktok-login-v2/'
+//   const redirectUri = 'https://dev.vervesearch.com/_temp/tiktok-login/'
 
 //   console.log(`clientKey: ${clientKey}`)
 //   console.log(`clientSecret: ${clientSecret}`)
@@ -109,5 +109,5 @@ app.post('/accesstoken', async (req, res) => {
 // })
 
 app.listen(port, '0.0.0.0', () => {
-  console.log(`Server running at https://dev.vervesearch.com/_temp/tiktok-login-v2/`)
+  console.log(`Server running at https://dev.vervesearch.com/_temp/tiktok-login/`)
 })
