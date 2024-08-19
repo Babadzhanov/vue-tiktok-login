@@ -1,58 +1,78 @@
 <script>
 import axios from 'axios'
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 
 export default {
   setup() {
-    // Handle the TikTok redirect
-    async function handleTikTokRedirect() {
-      const urlSearchParams = new URLSearchParams(window.location.search)
-      const code = urlSearchParams.get('code')
-      const scopes = urlSearchParams.get('scopes')
-      const state = urlSearchParams.get('state')
-      console.log('Authorization code:', code)
-      console.log('Scopes:', scopes)
-      console.log('State:', state)
+    const authStore = useAuthStore()
+    const accessToken = authStore.accessToken
+    // const accessToken = 'act.N9vvYfFOARuiGCsz7ScKy9WZgdbBPAfbrxPQGCZeHSloZTEib2rSCcKJOABr!5024.e1'
+    const userInfo = ref(null)
 
-      if (code) {
+    const fetchUserInfo = async () => {
+      if (accessToken) {
         try {
-          const response = await axios.post(
-            'https://vue-tiktok-login-server.onrender.com/accesstoken',
+          const response = await axios.get(
+            'https://open.tiktokapis.com/v2/user/info/?fields=open_id,union_id,avatar_url_100,display_name,username,bio_description',
             {
-              code
+              headers: {
+                Authorization: `Bearer ${accessToken}`
+              }
             }
           )
-          console.log(`response`, response)
-          const accessToken = response.data.access_token
-          console.log('Access Token:', accessToken)
+          userInfo.value = response.data.data.user
         } catch (error) {
-          console.error('Error exchanging code for token:', error)
+          console.error('Error fetching user information:', error)
         }
-
-        // Clear the code from the URL
-        window.history.replaceState({}, document.title, window.location.pathname)
+      } else {
+        console.error('Access Token is not available')
       }
     }
 
     onMounted(() => {
-      handleTikTokRedirect()
+      fetchUserInfo()
     })
+
+    return {
+      userInfo
+    }
   }
 }
 </script>
 
 <template>
   <div class="user">
-    <h1>Welcome User</h1>
+    <div v-if="userInfo">
+      <h1>Welcome {{ userInfo.username }}</h1>
+      <p><strong>Display Name:</strong> {{ userInfo.display_name }}</p>
+      <p><strong>Bio:</strong> {{ userInfo.bio_description }}</p>
+      <p class="avatar">
+        <strong>Profile Picture:</strong>
+        <img :src="userInfo.avatar_url_100" alt="Profile Picture" />
+      </p>
+    </div>
+    <div v-else>
+      <h1>Please login</h1>
+    </div>
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 @media (min-width: 1024px) {
   .user {
     min-height: 100vh;
     display: flex;
     align-items: center;
+  }
+  .avatar {
+    display: flex;
+    flex-direction: column;
+    img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+    }
   }
 }
 </style>
