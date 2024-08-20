@@ -56,11 +56,22 @@ onMounted(() => {
 
 <template>
   <div class="login">
-    <h1 class="green">{{ 'Login' }}</h1>
+    <h1 class="green">{{ "Login with Tiktok's " }}</h1>
     <div v-if="isLoading" class="loading-spinner"></div>
-    <button v-else class="button-login" @click="loginWithTikTok">
-      <img alt="Tiktok login button" class="logo" src="@/assets/button.svg" />
-    </button>
+    <data v-else class="button-container">
+      <button class="button-login" @click="loginWithTikTok">
+        Ads Manager
+        <!-- <img alt="Tiktok login button" class="logo" src="@/assets/button.svg" /> -->
+      </button>
+      <button class="button-login" @click="loginWithTikTok">
+        Business Center
+        <!-- <img alt="Tiktok login button" class="logo" src="@/assets/button.svg" /> -->
+      </button>
+      <button class="button-login" @click="loginWithTikTok">
+        Creator Marketplace
+        <!-- <img alt="Tiktok login button" class="logo" src="@/assets/button.svg" /> -->
+      </button>
+    </data>
   </div>
 </template>
 
@@ -103,13 +114,29 @@ h1 {
     transform: rotate(360deg);
   }
 }
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  height: 210px;
+}
 
 .button-login {
   padding: 0;
   margin: 0;
   border: 0;
   display: flex;
-  background-color: transparent;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #000;
+  background-color: #fff;
+  height: 50px;
+  width: 300px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
 
   &:hover {
     cursor: pointer;
