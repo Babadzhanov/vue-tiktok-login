@@ -7,7 +7,6 @@ export default {
   setup() {
     const authStore = useAuthStore()
     const accessToken = authStore.accessToken
-    // const accessToken = 'act.N9vvYfFOARuiGCsz7ScKy9WZgdbBPAfbrxPQGCZeHSloZTEib2rSCcKJOABr!5024.e1'
     const userInfo = ref(null)
 
     const fetchUserInfo = async () => {
