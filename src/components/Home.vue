@@ -64,7 +64,7 @@ onMounted(() => {
         <!-- <img alt="Tiktok login button" class="logo" src="@/assets/button.svg" /> -->
       </button>
       <button class="button-login" @click="loginWithTikTok">
-        Business Center
+        Accounts
         <!-- <img alt="Tiktok login button" class="logo" src="@/assets/button.svg" /> -->
       </button>
       <button class="button-login" @click="loginWithTikTok">
