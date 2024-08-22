@@ -63,14 +63,6 @@ onMounted(() => {
         Ads Manager
         <!-- <img alt="Tiktok login button" class="logo" src="@/assets/button.svg" /> -->
       </button>
-      <button class="button-login" @click="loginWithTikTok">
-        Accounts
-        <!-- <img alt="Tiktok login button" class="logo" src="@/assets/button.svg" /> -->
-      </button>
-      <button class="button-login" @click="loginWithTikTok">
-        Creator Marketplace
-        <!-- <img alt="Tiktok login button" class="logo" src="@/assets/button.svg" /> -->
-      </button>
     </data>
   </div>
 </template>
