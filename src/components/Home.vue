@@ -121,13 +121,13 @@ onMounted(() => {
     <h1 class="green">{{ "Login with Tiktok's " }}</h1>
     <div v-if="isLoading" class="loading-spinner"></div>
     <data v-else class="button-container">
-      <button class="button-login" @click="() => loginWithTikTokUser">
+      <button class="button-login" @click="() => loginWithTikTokUser()">
         TikTok account holder
       </button>
       <button class="button-login" @click="() => loginWithTikTokUser('stop')">
         TikTok account holder (stop at auth_code)
       </button>
-      <button class="button-login" @click="() => loginWithTikTokAdvertiser">
+      <button class="button-login" @click="() => loginWithTikTokAdvertiser()">
         TikTok advertiser
       </button>
       <button class="button-login" @click="() => loginWithTikTokAdvertiser('stop')">

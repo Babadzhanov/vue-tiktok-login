@@ -37,7 +37,9 @@ export default {
       if (accessToken && inputAppId.value !== '') {
         console.log('using appId:', inputAppId.value !== '' ? inputAppId.value.toString() : appId)
         console.log('using accessToken:', inputAccessToken.value !== '' ? inputAccessToken.value : accessToken)
+
         try {
+          console.log('posting to https://business-api.tiktok.com/open_api/v1.3/tt_user/token_info/get/')
           const response = await axios.post(
             'https://business-api.tiktok.com/open_api/v1.3/tt_user/token_info/get/',
             {
@@ -50,8 +52,9 @@ export default {
               }
             }
           )
+          console.log('response from https://business-api.tiktok.com/open_api/v1.3/tt_user/token_info/get/:')
           console.log(response)
-          tokenInfo.value = response
+          tokenInfo.value = JSON.stringify(response.data, null, 2)
         } catch (error) {
           console.error('Error fetching token information:', error)
         }
@@ -86,14 +89,16 @@ export default {
           <strong>Profile Picture:</strong>
           <img :src="userInfo.avatar_url_100" alt="Profile Picture" />
         </p>
+      </div>
+      <br>
+      <div>
+        <p>advertiser: </p>
         <input type="text" v-model="inputAppId" placeholder="Enter app id" />
         <input type="text" v-model="inputAccessToken" placeholder="Enter access token" />
         <button @click="fetchTokenInfo">fetch Token Info</button>
-        <p>{{ tokenInfo.value }}</p>
+        <p v-if="tokenInfo">{{ tokenInfo.value }}</p>
       </div>
-      <div v-else>
-        <h1>Please login</h1>
-      </div>
+      <p>access token: {{ accessToken }}</p>
     </div>
   </div>
 </template>
