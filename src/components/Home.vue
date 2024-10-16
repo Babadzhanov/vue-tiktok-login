@@ -10,8 +10,8 @@ const router = useRouter()
 
 const isLoading = ref(false)
 
-const responseUser = ref()
-const responseAdvertiser = ref()
+const responseUser = ref('')
+const responseAdvertiser = ref('')
 
 // Get the TikTok authorization URL
 const loginWithTikTokUser = async (stop?: string) => {
@@ -22,7 +22,7 @@ const loginWithTikTokUser = async (stop?: string) => {
     }
   })
   console.log(`getAuthUrl's response:`, response)
-  responseUser.value = response
+  responseUser.value = JSON.stringify(response.data, null, 2)
   window.location.href = `${response.data.url}`
 }
 
@@ -34,7 +34,7 @@ const loginWithTikTokAdvertiser = async (stop?: string) => {
     }
   })
   console.log(`getAuthUrl's response:`, response)
-  responseAdvertiser.value = response
+  responseAdvertiser.value = JSON.stringify(response.data, null, 2)
   window.location.href = `${response.data.url}`
 }
 
@@ -121,21 +121,21 @@ onMounted(() => {
     <h1 class="green">{{ "Login with Tiktok's " }}</h1>
     <div v-if="isLoading" class="loading-spinner"></div>
     <data v-else class="button-container">
-      <button class="button-login" @click="loginWithTikTokUser()">
+      <button class="button-login" @click="() => loginWithTikTokUser">
         TikTok account holder
       </button>
-      <button class="button-login" @click="loginWithTikTokUser('stop')">
-        TikTok account holder (stop at auth code)
+      <button class="button-login" @click="() => loginWithTikTokUser('stop')">
+        TikTok account holder (stop at auth_code)
       </button>
-      <button class="button-login" @click="loginWithTikTokAdvertiser()">
+      <button class="button-login" @click="() => loginWithTikTokAdvertiser">
         TikTok advertiser
       </button>
-      <button class="button-login" @click="loginWithTikTokAdvertiser('stop')">
-        TikTok advertiser (stop at auth code)
+      <button class="button-login" @click="() => loginWithTikTokAdvertiser('stop')">
+        TikTok advertiser (stop at auth_code)
       </button>
     </data>
-    <p>user: {{ responseUser.value }}</p>
-    <p>advertiser: {{ responseAdvertiser.value }}</p>
+    <p v-if="responseUser">user: {{ responseUser }}</p>
+    <p v-if="responseAdvertiser">advertiser: {{ responseAdvertiser }}</p>
   </div>
 </template>
 
@@ -185,12 +185,12 @@ h1 {
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
-  height: 210px;
+  height: 350px;
 }
 
 .button-login {
   padding: 0;
-  margin: 0;
+  margin: 10px 0;
   border: 0;
   display: flex;
   justify-content: center;
